@@ -1,0 +1,115 @@
+<div class="container" data-ng-class="page.title">
+  <div class="row ph-page-header"><!--<pre data-ng-bind='page.sections|json' ></pre>-->
+    <div class="col-xs-12" data-ng-if="page.sections">
+      <img class="img-responsive ph-img-full-width ph-menu-image" data-ng-src="{{headerImage}}{{page.sections[tab].header_image}}"/>
+      <div class="ph-page-title-lrg hidden-xs ph-auto-width">
+        <div class="ph-titlecase">
+        <h1 class="ph-jumbo ph-margin-left" data-ng-bind="page.sections[tab].header_name"></h1></div>
+        <div class="btn-group-justified ph-page-section ph-auto-width" data-ng-if="page.sections.length > 1">
+          <a href="" class="btn btn-lg btn-link ph-titlecase" data-ng-class="{'ph-active-section':tab==={{$index}}}" data-ng-repeat="section in page.sections" data-ng-bind-html="section.name" data-ng-click="select($index,section.pagesection_id,page.title, section.name)"></a>
+          <a href="" class="btn btn-lg btn-link ph-titlecase" data-ng-class="{'ph-active-section':tab==='builder'}" data-ng-if="page.title=='pizza'" data-ng-click="select('builder',section.pagesection_id,page.title, 'Create your own')">Create your own</a>
+        </div>
+      </div>
+      <div class="ph-page-title-sml visible-xs-block" data-ng-if="page.sections">
+        <div class="text-center ph-titlecase">
+          <h1 class="ph-jumbo" data-ng-bind="page.sections[tab].header_name"></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row visible-xs-block ph-padding-top" data-ng-if="page.sections.length > 1">
+    <div>
+      <div class="col-xs-6">
+        <a href="" class="ng-odd btn btn-overflow btn-block ph-titlecase ph-ellipsis" data-ng-class="tab==={{$index}} ? 'btn-primary': 'btn-default'" data-ng-bind-html="section.name" data-ng-click="select($index,section.pagesection_id,page.title, section.name)"  data-ng-repeat="section in page.sections" data-ng-if="$even && section.name.indexOf('Wingstreet') > -1"></a>
+        <a href="" class="ng-odd btn btn-block ph-titlecase ph-ellipsis" data-ng-class="tab==={{$index}} ? 'btn-primary': 'btn-default'" data-ng-bind-html="section.name" data-ng-click="select($index,section.pagesection_id,page.title, section.name)"  data-ng-repeat="section in page.sections" data-ng-if="$even && section.name.indexOf('Wingstreet') < 0"></a>
+        <a href="" data-ng-click="select('builder',section.pagesection_id,page.title, section.name)" data-ng-if="(page.sections.length%2) == 0 && page.title=='pizza'"  data-ng-class="tab=== 'builder' ? 'btn-primary': 'btn-default'" class="btn btn-block ph-titlecase ph-ellipsis btn-default">Create your own</a>
+      </div>
+      <div class="col-xs-6">
+        <a href="" class="ng-odd btn btn-block ph-titlecase ph-ellipsis" data-ng-class="tab==={{$index}} ? 'btn-primary': 'btn-default'" data-ng-bind-html="section.name" data-ng-click="select($index,section.pagesection_id,page.title, section.name)"  data-ng-repeat="section in page.sections" data-ng-if="$odd"></a>
+        <a href="" data-ng-click="select('builder',section.pagesection_id,page.title)" data-ng-if="(page.sections.length%2) == 1 && page.title=='pizza'" data-ng-class="tab=== 'builder' ? 'btn-primary': 'btn-default'" class="btn btn-block ph-titlecase ph-ellipsis btn-default">Create your own</a>
+      </div>
+    </div>
+  </div>
+    <!--tile_row,tile_img-->
+    <div class="row ph-padding-top ng-scope" data-ng-if="isSkinnyTab() && page.title === 'pizza'">
+        <div class="col-xs-12">
+            <div class="ph-padding-top ph-hangtag-txt">
+                <b>Our Skinny Slice Crust is practically cheating. You get the same great flavor, while cutting calories.</b>
+
+               <p>We just use a smarter portion of Hand Tossed dough to make your crust skinnier. Plus, we go easy on some meats and cheeses while delivering major flavor with sauce and veggies. <b>Our recipes are only 250 calories or less per slice, or 300 calories or less if you create your own.</b></p>
+
+               <p style="font-size:12px;">If you create your own, just make sure you only use red sauce and no more than 7 toppings (3 meat toppings max). Sorry, no doubling up on the cheese or toppings, and no drizzles or crust finishers, please. Calorie reductions are based on a thinner crust and balanced portion of toppings. Not a reduced calorie food. Just a smarter portion size.</p>
+            </div>
+        </div>
+    </div>
+  <div class="row ph-padding-top ng-scope" data-ng-if="isGlutenTab() && page.title === 'pizza'">
+    <div class="col-xs-12">
+      <div class="ph-padding-top ph-hangtag-txt">
+        While Pizza Hut&reg; is proud to offer pizzas with gluten-free ingredients, Pizza Hut kitchens are not a gluten-free environment. Pizza Hut kitchens
+        are also not an allergen-free environment. Due to the handcrafted nature of our menu items, variations in vendor-supplied ingredients, and our use
+        of shared cooking and preparation areas, we cannot assure you that our restaurant environment or any menu item will be completely free of gluten,
+        nuts or any other allergens. To learn more, visit our
+        <a class="glutenDisplay" data-ng-href="/gluten-free">Gluten-free information page</a>.
+      </div>
+    </div>
+  </div>
+
+  <!--This code is commented ,as the image in the akamai  doesnot exist once it exist we can un comment this
+  <div class="row ph-wingStreet-Image" data-ng-if="wingStreetTab() && page.title === 'wings'">
+    <div class="col-xs-12">
+        <img class="img-responsive ph-wings-street hidden-xs" data-ng-src="{{wingsImageTablet}}"/>
+       <img class="img-responsive ph-wings-street visible-xs" data-ng-src="{{wingsImageMobile}}"/>
+    </div>
+  </div>-->
+  <div data-ng-if="page.title === 'deals' && isLocalized() && showSortBY" class="col-xs-12 col-sm-8 col-md-4 ph-padding-left-0">
+    <h3 style="margin-bottom: 5px; padding-left: 15px; margin-top: 12px;">SORT BY:</h3>
+    <div class="col-md-12 col-xs-12 col-sm-12" style="margin-bottom: 5px">
+      <div class="col-md-8 col-xs-8 col-sm-5 drop_st_deals" style="padding-right: 0px; padding-left: 0px">
+       <select class="form-control col-md-9" style="border-bottom-right-radius: 0px;border-top-right-radius: 0px;margin-top: 0px;" data-ng-model="Sortby" data-ng-change="sort_price(Sortby)">
+          <option value='C' class="drop_st" selected>Recommended</option>
+          <option value='L' class="drop_st">Price Low to High</option>
+          <option value='H' class="drop_st">Price High to Low</option>
+        </select>
+      </div>
+      <div class="col-md-3 col-xs-3 col-sm-3" style="padding-left: 0px">
+        <button type="button" class="btn btn-default butn" style="border-bottom-left-radius: 0px;border-top-left-radius: 0px;cursor: default">
+          <span class="glyphicon glyphicon-sort"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+    <div class="row ph-wingStreet-Image" data-ng-if="page.title === 'deals' && vcoSubBanner">
+        <div class="col-xs-12">
+            <div id="VCO_Banner1" style="cursor:pointer;"><img class="img-responsive ph-wings-street hidden-xs" data-ng-src="{{dealsImageTablet}}" data-ng-click="vcoSubBannerClick('Deals')"/></div>
+            <div id="VCO_Banner2" style="cursor:pointer;"><img class="img-responsive ph-wings-street visible-xs" data-ng-src="{{dealsImageMobile}}" data-ng-click="vcoSubBannerClick('Deals')"/></div>
+        </div>
+    </div>
+    <div class="row ph-wingStreet-Image" data-ng-if="page.title === 'pizza' && vcoSubBanner">
+        <div class="col-xs-12">
+            <div id="VCO_Banner3" style="cursor:pointer;"><img class="img-responsive ph-wings-street hidden-xs" data-ng-src="{{pizzaImageTablet}}" data-ng-click="vcoSubBannerClick('Pizza')"/></div>
+            <div id="VCO_Banner4" style="cursor:pointer;"><img class="img-responsive ph-wings-street visible-xs" data-ng-src="{{pizzaImageMobile}}" data-ng-click="vcoSubBannerClick('Pizza')"/></div>
+        </div>
+    </div>
+
+  <div class="row ph-padding-top">
+    <div class="col-xs-12">
+      <!-- Only One Section -->
+        <div class="row" data-ng-if="page.sections.length === 1 || page.autoGen">
+            <ph:tile data-ng-if="tile.tile_id" class="col-xs-12 col-sm-6" data-item="tile" data-sortby='selectedval' data-dropval="dropdownval" data-sections="page.sections" data-changetab="changetab" data-skinny="isSkinnyTab()" data-gluten="isGlutenTab()" data-types="page.pb_types" data-page="page.title" data-localized="isLocalized()" data-add="add" data-ng-repeat="tile in page.sections[0].tiles | orderBy:display_order"></ph:tile>
+            <!--<ph:tile data-ng-if="auto.tile_id < 0" data-auto="auto" class="col-xs-12 col-sm-6" data-sortby='selectedval' data-dorpval="dropdownval" data-sections="page.sections" data-changetab="changetab" data-skinny="isSkinnyTab()" data-gluten="isGlutenTab()" data-page="page.title" data-localized="isLocalized()" data-add="add" data-ng-repeat="auto in page.autoGen | orderBy:display_order"></ph:tile>-->
+        </div>
+      <!-- Multiple Sections -->
+      <div class="row" data-ng-if="page.sections.length > 1">
+        <ph:tile data-ng-if="tile.tile_id" class="col-xs-12 col-sm-6" data-item="tile" data-sortby='selectedval' data-dropval="dropdownval" data-sections="page.sections" data-changetab="changetab" data-skinny="isSkinnyTab()" data-gluten="isGlutenTab()" data-types="page.pb_types" data-page="page.title" data-localized="isLocalized()" data-add="add" data-ng-repeat="tile in page.sections[tab].tiles | orderBy:display_order"></ph:tile>
+      </div>
+    </div>
+  </div>
+
+  <!--- Mobile Menu Nav Extra Small -->
+  <div class="row visible-xs ph-btn-mob ph-padding-top">
+    <div class="" data-ng-repeat="pg in pages" data-ng-class="($last || pg.url == 'fivemenu') ? 'col-xs-12': 'col-xs-6'">
+      <a href="" data-ui-sref="index.menu.page({page:'{{pg.url}}'})" data-ng-class="{'btn-primary': $last, 'btn-promoProp':pg.url == 'fivemenu'}" class="btn btn-default btn-block ph-titlecase" data-ng-bind="pg.title"></a>
+    </div>
+  </div>
+
+</div>

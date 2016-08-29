@@ -1,0 +1,48 @@
+<article class="container">
+    <header class="ph-no-bg" data-ng-if="showBreadcrumbs">
+        <h1 class="text-center" data-ng-bind-html="deal_title"></h1>
+        <div class="panel-default">
+            <div class="ph-deals-headings panel-body">
+                <div class="col-xs-1  col-xs-lt-gutter hidden-xs" data-ng-class="{'hidden-sm hidden-md hidden-lg' : offset === 0}">
+                    <span class="glyphicon glyphicon-chevron-left ph-deals-control pointer-cursor" data-ng-click="offsetBack()"></span>
+                </div>
+                <div class="col-xs-9 col-xs-offset-1" data-ng-swipe-left="offsetNext()" data-ng-swipe-right="offsetBack()" data-ng-class="{'col-sm-offset-1' : offset === 0}">
+                    <div class="group btn-group btn-breadcrumb btn-full hidden-xs">
+                        <span class="heading btn " data-ng-class="{'btn-active' : currentStep == step._data.index, 'btn-bread-33' : getScopedSteps().length > 2, 'btn-bread-50':getScopedSteps().length <= 2 }" data-ng-repeat="step in getScopedSteps()">
+                            <a class=" ph-ellipsis" data-ng-click="gotoStep(currentStep, step)" data-ng-bind-html="step.desc"></a>
+                        </span>
+                    </div>
+                    <div class="group btn-group btn-breadcrumb btn-full ph-auto-margin visible-xs">
+                        <span class="heading btn visible-xs col-xs-12 single-mobile" data-ng-class="{'btn-active' : currentStep == mobileStep._data.index }">
+                            <a class="ph-ellipsis" data-ng-click="gotoStep(currentStep, step)" data-ng-bind-html="mobileStep.desc"></a>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-1 col-xs-lt-gutter hidden-xs" data-ng-class="{'hidden-sm hidden-md hidden-lg': offset >= steps.length-3}">
+                    <span class="glyphicon glyphicon-chevron-right ph-deals-control pull-right pointer-cursor" data-ng-click="offsetNext()"></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section data-ng-if="showType === _stepTypes.tiles" class="row">
+        <div data-ng-repeat="tile in stepTiles">
+            <ph:tile data-ng-if="tile.tile_id" class="col-xs-12 col-sm-6" data-item="tile" data-types="page.pb_types" data-page="'deals'" data-localized="isLocalized()" data-add="add"></ph:tile>
+        </div>
+    </section>
+
+    <section data-ng-if="showType === _stepTypes.builder" class="row">
+        <ph:builder data-step="currentStep" data-prepop="stepTiles" data-isdeal="true" data-external-submit="submitPizza" data-config="pizzaBuilderConfig"></ph:builder>
+    </section>
+
+    <seciton data-ng-if="showType === _stepTypes.waiting">
+    <!-- interstitial state potential //-->
+    </seciton>
+
+    <section data-ng-if="showType === _stepTypes.master">
+        <div data-ng-repeat="tile in stepTiles">
+            <ph:tile data-ng-if="tile.tile_id" class="col-xs-12 col-sm-6" data-item="tile" data-types="page.pb_types" data-page="'deals'" data-localized="isLocalized()" data-add="add"></ph:tile>
+        </div>
+    </section>
+
+</article>

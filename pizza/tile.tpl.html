@@ -1,0 +1,235 @@
+<!-- remove the false below and add waiting state css to div.waiting for interstitial states to work //-->
+
+<!--second pan pasta tile code separated because it take more height when compare to other tiles-->
+<div class="panel panel-default ph-tile" xmlns="http://www.w3.org/1999/html" data-ng-if="item.optionalPan">
+    <div class="panel-body">
+        <div class="product">
+            <div class="productDetails">
+                <div class="productEyebrow">
+                    <span data-ng-if="item.eyebrow">{{item.eyebrow}}</span>
+                </div>
+                <!-- For speed purposes, we should use something like Adobe Scene7  will deliver native image size for mobile. Low hanging fruit is to Lazy Load all images. -->
+                <div class="productImage">
+                    <img data-ng-if="item.main_image !='' &&  !auto" src="" alt="" data-ng-src="{{img_root}}{{item.main_image}}"/>
+                </div>
+                <!-- Product Price -->
+                   <div class="productPrice" data-ng-if="!item.isEdit">
+                        <div data-ng-init="__update('init')"><h4 data-ng-if="calculated.price">$<span data-ng-bind="calculated.price"></span></h4></div>
+                    </div>
+            </div>
+            <div class="productDescription">
+                <div data-ng-if="item.title">
+                    <h4 data-ng-class="{'smaller-title' : item && item.title && item.title.length > 55}" data-ng-bind-html="item.title"></h4>
+                    <p class="tile-description" data-ng-bind-html="shortDescription"></p>
+                    <!--                <button popover="{{item.description}}" id="{{item.tile_id}}"  popover-placement="auto" popover-trigger="mouseenter" class="tile-description tile_more">More...</button>-->
+                    <button class="tile-description tile_more" id="{{item.tile_id}}" data-ng-if="displayMoreText" data-ng-click="showFullDescription('{{item.tile_id}}')">More...</button>
+                </div>
+            </div>
+            <div class="pastaProductControllers">
+                <div class="ph-margin-top" data-ng-repeat="topCD in toppcode">
+                    <span data-ng-if="topCD.code ==='PTUSCTMP' || topCD.code ==='PTUSCTCP'" class="radioContainer">
+                        <input data-ng-attr-id="breadSticks{{item.tile_id}}" type="radio" data-ng-attr-name={{item.tile_id}} data-ng-init="selected.topp=selected.topp? selected.topp :'1'; __update('init')"
+                               data-ng-model="selected.topp" value="1" data-ng-change="__update()" class="radioOption"/>
+                        <label for={{item.tile_id}} class="radioLabel">Includes 5 Bread Sticks</label>
+                    </span>
+                    <span data-ng-if="topCD.code ==='PTUSCTCPCS' || topCD.code ==='PTUSCTMPCS'" class="radioContainer">
+                        <input data-ng-attr-id="cheeseSticks{{item.tile_id}}" type="radio" data-ng-attr-name={{item.tile_id}} data-ng-model="selected.topp" value="2" data-ng-change="__update()" class="radioOption"/>
+                        <label for={{item.tile_id}} class="radioLabel">Upgrade to Cheesesticks - Additional Charge</label>
+                    </span>
+                </div>
+                    <span data-ng-if="toppcode[0].code ==='PTUSCTMP' || toppcode[0].code ==='PTUSCTCP' || toppcode[1].code ==='PTUSCTCPCS' || toppcode[1].code ==='PTUSCTMPCS'">
+                       <label><input type="checkbox" data-ng-model="selected.addPan" data-ng-change="__update()"> Add a second pan</label>
+                        <select  data-ng-if="selected.addPan" class="form-control ph-pasta"  data-ng-model="selected.secondPan"  data-ng-change="__update()">
+                            <option value="">Select 2nd Pan</option>
+                            <option value="{{optPan.code}}" class="drop_st" data-ng-bind="optPan.descShort" data-ng-repeat="optPan in item.optionalPan"></option>
+                        </select>
+                    </span>
+                <div  data-ng-if="!item.isEdit" class="productButtons">
+                    <a data-ng-click="__add()" class="btn btn-primary ph-ellipsis ">Add to Order</a></div>
+                <div  data-ng-if="item.isEdit" class="productButtons">
+                    <a data-ng-click="__edit()" class="btn btn-primary ph-ellipsis ">Add to Order</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--end of second pan pasta code-->
+<div class="panel panel-default ph-tile" data-ng-class="{interstitial : tile_interstitial && false}" xmlns="http://www.w3.org/1999/html" data-ng-if="!item.optionalPan">
+    <div data-ng-class="item.selectedTile ? ' ph-edit-selected-tile' : 'panel panel-default ph-tile'">
+        <div data-ng-class="{'out-of-product' : item.out_of_product || auto.out_of_product}">
+            <img data-ng-if="item.out_of_product || auto.out_of_product" src="https://www.pizzahut.com/assets/w/images/out-of-stock-deals.png" class="out-of-product-img">
+        </div>
+    <div class="panel-body" data-ng-class="{'ph-fiveDollarMenu' : (item.button_copy.length > 1 && (item.mobile_link == '/#/menu/fivemenu' || item.link == '/site/menu/fivemenu'))}">
+        <div class="waiting">
+        </div>
+        <div class="product">
+            <div class="productDetails">
+                <div class="productEyebrow" data-ng-class="{'ph-fiveDollarEyebrow' : (item.button_copy.length > 1 && (item.mobile_link == '/#/menu/fivemenu' || item.link == '/site/menu/fivemenu'))}">
+                    <span data-ng-if="item.eyebrow">{{item.eyebrow}}</span>
+                    <span data-ng-if="auto.eyebrow">{{auto.eyebrow}}</span>
+                </div>
+                <!-- For speed purposes, we should use something like Adobe Scene7  will deliver native image size for mobile. Low hanging fruit is to Lazy Load all images. -->
+                <div class="productImage">
+                    <img data-ng-if="auto" src="" alt=" " data-ng-src="{{img_root}}{{auto.main_image}}" />
+                    <img data-ng-if="item.main_image !='' &&  !auto" src="" alt="" data-ng-src="{{img_root}}{{item.main_image}}"/>
+                    <img data-ng-if="item.main_image=='' && !auto" src="" alt=""  data-ng-src="{{default_image}} "/>
+                </div>
+                <!-- Product Price -->
+                <div data-ng-if="localized === true && page === 'pizza'" class="productPrice">
+                    <h4 data-ng-if="calculated.price">$<span data-ng-bind="calculated.price"></span></h4>
+                    <h4 data-ng-if="item.tile_data.deal_code" data-ng-bind="item.price"></h4>
+                    <h4 data-ng-if="auto && localized" data-ng-bind="auto.price"></h4>
+                </div> <!-- End product Price-->
+                <div data-ng-if="!isEditItem && (localized === true && page !== 'pizza' && page !== '$5 Flavor Menu')">
+                    <span data-ng-if="page !== 'deals' && item.class === 'WS' && item.subclss === 'wings' && !(calculated.price) && (selected.prod === 'default_text' || (selected.size === 'default_text'))" class="ph-startingPrice productPrice">
+                       <span> Starting at </span>
+                        <h4 class="ph-startinAtPriceFont" data-ng-if="lowestPiece">$<span>{{lowestPiece | number:2}}</span></h4>
+                    </span>
+                    <div class="productPrice" data-ng-if="page !== '$5 Flavor Menu'">
+                        <div data-ng-init="__update('init')"><h4 data-ng-if="calculated.price">$<span data-ng-bind="calculated.price"></span></h4></div>
+                        <h4 data-ng-if="item.tile_data.deal_code"><span style="margin: -4px;" data-ng-if="!((item.price).indexOf('$') !== -1)">$</span> <span data-ng-bind="item.price"></span></h4>
+                        <h4 data-ng-if="auto.price" data-ng-bind="auto.price"></h4>
+                    </div>
+
+                </div> <!-- End product Price -->
+            </div><!-- End Product Details -->
+            <!-- Product Description -->
+            <div data-ng-class="isEditItem === 'editDealItem' ? 'edit-tile-00 productDescription' : 'productDescription'">
+                <div data-ng-if="item.title">
+                    <h4 data-ng-class="{'smaller-title' : item && item.title && item.title.length > 55}" data-ng-bind-html="item.title"></h4>
+                    <p class="tile-description" data-ng-bind-html="shortDescription"></p>
+<!--                <button popover="{{item.description}}" id="{{item.tile_id}}"  popover-placement="auto" popover-trigger="mouseenter" class="tile-description tile_more">More...</button>-->
+                    <button class="tile-description tile_more" id="{{item.tile_id}}" data-ng-if="displayMoreText" data-ng-click="showFullDescription('{{item.tile_id}}')">More...</button>
+                </div>
+                <div data-ng-if="auto.title">
+                    <h4 data-ng-class="{'smaller-title' : auto && auto.title && auto.title.length > 55}" data-ng-bind-html="auto.title"></h4>
+                    <p class="tile-description" data-ng-bind-html="shortDescription"></p>
+<!--                    <button popover="{{auto.description}}" popover-trigger="mouseenter" popover-placement="auto" class="tile-description tile_more">More...</button>-->
+                    <button class="tile-description tile_more" id="{{auto.tile_id}}" data-ng-if="displayMoreText" data-ng-click="showFullDescription('{{auto.tile_id}}')">More...</button>
+                </div> <!-- End Product Description -->
+            </div>
+           <!-- Product Controller Elements -->
+            <div class="productControllers">
+                <!-- Pizza Options -->
+                <div data-ng-if="localized === true  && item.crusts && item.sizes" class="productOptions double"><!--  Drop downs for pizza starts here-->
+                    <select class="form-control" data-ng-model="selected.crust" data-ng-init="selected.crust=firstNonDisabled(item.crusts);" data-ng-change="__update()">
+                        <option value="{{crust.val}}"  class="drop_st" data-ng-bind-html="crust.text" data-ng-disabled="crust.isDisabled" data-ng-repeat="crust in item.crusts"></option>
+                    </select>
+                    <select class="form-control"  data-ng-model="selected.size"  data-ng-init="selected.size=item.sizes[0].val=='L'?item.sizes[0].val:item.sizes[1].val;"  data-ng-change="__update()">
+                        <option value="{{size.val}}" data-ng-selected="size.val == 'L'"  class="drop_st" data-ng-bind-html="size.text" data-ng-disabled="size.isDisabled" data-ng-repeat="size in item.sizes"></option>
+                    </select>
+                </div> <!-- End Pizza Options -->
+                <!-- All other Options -->
+                <div data-ng-if="localized === true && page !== 'pizza'  && !isEditItem " data-ng-class="item.selects.length === 2 ? 'productOptions double' : (item.selects.length === 3) ? 'productOptions triple' : 'productOptions'">
+                    <select data-ng-if="(item.selects.length >=1)"
+                            data-ng-repeat="select in item.selects"
+                            data-ng-model="selected[select.name]"
+                            data-ng-init="selected[select.name]=select.options[0].val;__update('init')"
+                            data-ng-change="__update('selected')" class="form-control">
+
+                        <option value="{{option.val}}" data-ng-if="item.five_menu === '1' && item.class === 'WS' && select.name === 'size'" data-ng-selected="option.selected" class="drop_st" data-ng-bind-html="option.text = '8 wings'" data-ng-disabled="option.isDisabled" data-ng-repeat="option in select.options"></option>
+                        <option value="{{option.val}}" data-ng-if="item.five_menu === '1' && item.class === 'WS' && select.name !== 'size'" data-ng-selected="option.selected" class="drop_st" data-ng-bind-html="option.text" data-ng-disabled="option.isDisabled" data-ng-repeat="option in select.options"></option>
+                        <option value="{{option.val}}" data-ng-if="item.five_menu === '1' && item.class !== 'WS'" data-ng-selected="option.selected" class="drop_st" data-ng-bind-html="option.text" data-ng-disabled="option.isDisabled" data-ng-repeat="option in select.options"></option>
+                        <option value="{{option.val}}" data-ng-if="item.five_menu !== '1'" data-ng-selected="option.selected" class="drop_st" data-ng-bind-html="option.text" data-ng-disabled="option.isDisabled" data-ng-repeat="option in select.options"></option>
+                    </select>
+                </div>
+                <div data-ng-if="localized === true && page !== 'pizza'  && (isEditItem === 'editItem' || isEditItem==='editDealItem') && item.selects.length ===2 " class="productOptions double">
+                    <select data-ng-init="selected[select.name]=select.options[0].val;__update('init')" data-ng-if="(item.selects.length >=1)" data-ng-repeat="select in item.selects" data-ng-model="selected[select.name]"
+                            data-ng-change="__update('selected')" class="form-control">
+
+                        <option value="{{option.val}}" data-ng-if="item.five_menu === '1' && item.class === 'WS' && select.name === 'size'" data-ng-selected="option.selected" class="drop_st" data-ng-bind-html="option.text = '8 wings'" data-ng-disabled="option.isDisabled" data-ng-repeat="option in select.options"></option>
+                        <option value="{{option.val}}" data-ng-if="item.five_menu === '1' && item.class === 'WS' && select.name !== 'size'" data-ng-selected="option.selected" class="drop_st" data-ng-bind-html="option.text" data-ng-disabled="option.isDisabled" data-ng-repeat="option in select.options"></option>
+                        <option value="{{option.val}}" data-ng-if="item.five_menu === '1' && item.class !== 'WS'" data-ng-selected="option.selected" class="drop_st" data-ng-bind-html="option.text" data-ng-disabled="option.isDisabled" data-ng-repeat="option in select.options"></option>
+                        <option value="{{option.val}}" data-ng-if="item.five_menu !== '1'" data-ng-selected="option.selected" class="drop_st" data-ng-bind-html="option.text" data-ng-disabled="option.isDisabled" data-ng-repeat="option in select.options"></option>
+
+                    </select>
+                </div>
+                <div data-ng-if="localized === true && page !== 'pizza' && isEditItem === 'editItem' && item.selects.length ===1" class="productOptions double">
+                    <select class="form-control" id="selectQty1" data-ng-model="item.qty" data-ng-init="item.qty" data-ng-options="qty for qty in quantities"></select>
+                    <select data-ng-init="selected[select.name]=item[select.name];__update('init')" class="form-control" data-ng-if="(item.selects.length >=1)" data-ng-repeat="select in item.selects"
+                            data-ng-model="selected[select.name]" data-ng-change="__update()">
+                        <option value="{{option.val}}" data-ng-selected="option.selected" class="drop_st" data-ng-bind-html="option.text"  data-ng-repeat="option in select.options"></option>
+                    </select>
+                </div>
+                <div data-ng-if="localized === true && page !== 'pizza' && isEditItem === 'editItem' && item.selects.length ==0" >
+                    <select class="ph-edit-qty col-xs-4" id="selectQty2" data-ng-model="item.qty" data-ng-init="item.qty;__update('init')" data-ng-options="qty for qty in quantities"></select>
+                    <a data-ng-class="page !=='pasta' ? 'ph-edit-single col-xs-7 btn btn-primary hidden-xs ': 'btn btn-primary ph-edit-pasta-save hidden-xs'" data-ng-click="__edit()">save</a>
+                </div>
+                <div data-ng-if="localized === true && page !== 'pizza' && isEditItem === 'editDealItem' && item.selects.length ==1">
+                    <select class="ph-deal-single" data-ng-repeat="select in item.selects"  data-ng-model="selected[select.name]" data-ng-init="selected[select.name]=select.options[0].val;__update('init')" data-ng-change="__update()" class="form-control">
+                        <option value="{{option.val}}" class="drop_st" data-ng-bind-html="option.text"  data-ng-repeat="option in select.options"></option>
+                    </select>
+                </div>
+                <!-- End All other Options -->
+                <!--Pizza Buttons -->
+                <div data-ng-if="localized === true && page === 'pizza'" class="productButtons">
+                    <a data-ng-if="((item.link !=='') && (item.type =='3')&& (item.eyebrow ==='') &&(item.button_copy ==='' || item.button_copy ===null) && item.deal_code=='')"  href=""  class="btn btn-primary" data-ng-click="__pizzaBuilder(item,selected, calculated)">Get Started</a>
+                    <a data-ng-if="((item.link !=='') &&  (item.eyebrow ==='') &&(item.button_copy ==='' || item.button_copy ===null)) && item.crusts ===''&& item.deal_code=='' " href="" class="btn btn-primary" data-ng-click="__pizzaBuilder(item,selected, calculated)">Get Started</a>
+                    <a data-ng-if="(item.link !==''  && (item.button_copy ==='' ||  item.button_copy ===null) && item.tile_data.deal_code=='' && item.type !=='1')" href="#/menu/tmnt" class="btn btn-primary">Get Started</a>
+                    <a data-ng-if="(item.type !=='3' && (item.button_copy ==='' ||  item.button_copy ===null) && item.eyebrow ==''&&  item.deal_code=='')" href="" class="btn btn-primary" data-ng-click="__productAdd(item.link, item.new_tab)" >Add to Order</a>
+                    <a data-ng-if="(item.eyebrow !=='' && item.type !='3' && item.link ==='' && (item.button_copy ==='' ||  item.button_copy ===null) && item.deal_code=='')" class="btn btn-primary">Continue</a>
+                    <a data-ng-if="(item.eyebrow !=='' && (item.button_copy ==='' ||  item.button_copy ===null)&&  item.link !=='')&&  item.deal_code==''" href="#/menu/deals" class="btn btn-primary" data-ng-click="__add()" >Add to Order</a>
+                    <a data-ng-if="((item.button_copy) && item.national_tile ==='1') &&  item.tile_data==''" href=""  class="btn btn-primary" data-ng-click="__pizzaBuilder(item)">{{item.button_copy}}</a>
+                    <a data-ng-if="item.tile_data.deal_code" href="" data-ng-click="__add()" class="btn btn-primary">Add to Order</a>
+                    <div data-ng-if="((item.link ==='' )&& (item.type =='3') && (item.button_copy ==='' || item.button_copy ===null))">
+                        <div data-ng-if="!(item.cannot_configure=='0' || item.cannot_configure==null || item.cannot_configure=='')">
+                            <a  class="btn btn-primary ph-ellipsis"   data-ng-click="__add()">Add to Order</a></div>
+                    </div>
+                            <!-- Horizontal Buttons for customize order -->
+                    <div data-ng-if="((item.link ==='' ) && (item.button_copy ==='' || item.button_copy ===null))" class="double">
+                        <div data-ng-if="(item.cannot_configure=='0' || item.cannot_configure==null)">
+                            <a class="btn btn-default ph-ellipsis" data-ng-click="__pizzaBuilder(item,selected,calculated)">Customize It</a>
+                            <a  class="btn btn-primary ph-ellipsis"   data-ng-click="__add()">Add to Order</a></div>
+                    </div>
+                </div>
+                <!-- pizza buttons for the upsell page-->
+                <div data-ng-if="localized === true && page === 'allupsell'" class="productButtons">
+                    <div data-ng-if="((item.link ==='') && (item.tile_data.tile_subclass === 'pizza') && (item.button_copy ==='' || item.button_copy ===null))" class="double">
+                        <div data-ng-if="(item.cannot_configure=='0' || item.cannot_configure==null)">
+                            <a class="btn btn-default ph-ellipsis" data-ng-click="__pizzaBuilder(item,selected,calculated)">Customize It</a>
+                            <a  class="btn btn-primary ph-ellipsis"   data-ng-click="__add()">Add to Order</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- End Pizza Buttons -->
+                <!-- All other Buttons -->
+                <div data-ng-if="localized === true && page !== 'pizza'" class="productButtons">
+                    <!-- Non Auto Buttons -->
+                    <div data-ng-if="!auto && !isEditItem">
+                        <a data-ng-if="((item.link ==='' )&& (item.type ==='3')&& (item.eyebrow ==='') &&!(item.button_copy) && (item.tile_data.tile_subclass !== 'pizza'))" class="btn btn-primary ph-ellipsis" data-ng-click="__add()">Add to Order</a>
+                        <a data-ng-if="((item.link !=='') && (item.type ==='3')&& (item.eyebrow ==='')&& !(item.button_copy ))"  class="btn btn-primary ph-ellipsis" data-ng-click="__getStarted(item,selected,calculated)">Get Started</a>
+                        <a data-ng-if="item.tile_data.deal_code && item.button_copy==''" data-ng-click="__add()" class="btn btn-primary ph-ellipsis" >Add to Order</a>
+                        <a data-ng-if="(item.link !=='' && item.type ==='1'&& item.eyebrow ==='' && !(item.button_copy )) && item.mobile_link !== ''" data-ui-sref="{{item.mobile_link}}"  class="btn btn-primary ph-ellipsis" data-ng-click="__add()">Add to Order</a>
+                        <a data-ng-if="(item.link !=='' && item.type ==='1'&& item.eyebrow ==='' && !(item.button_copy )) && item.mobile_link === ''" data-ui-sref="{{item.link}}"  class="btn btn-primary ph-ellipsis" data-ng-click="__getStarted(item, selected,calculated)">Get Started</a>
+                        <a data-ng-if="((item.type !=='3') && (item.link ==='')&&(item.eyebrow ==='') &&!(item.button_copy) && item.tile_data=='')" class="btn btn-primary ph-ellipsis" data-ng-click="__add()">Add to Order</a>
+                        <!-- todo : the following line seems to do absolutely nothing //-->
+                        <a data-ng-if="(item.eyebrow !=='' && !(item.button_copy)  &&  item.link ==='') && item.tile_data=='' " class="btn btn-primary ph-ellipsis">Continue</a>
+                        <a data-ng-if="(item.eyebrow !=='' &&!(item.button_copy) &&  item.link !=='')"  data-ng-click="__add()" class="btn btn-primary ph-ellipsis " >Add to Order</a>
+                        <a data-ng-if="(item.eyebrow !=='' &&!(item.button_copy) &&  item.link ==='' && item.deal_code=='')" class="btn btn-primary ph-ellipsis " data-ng-click="__add()">Add to Order</a>
+                        <a data-ng-if="item.tile_data.tile_class === 'deal' && item.button_copy.length > 1" class="btn btn-primary ph-ellipsis" data-ng-click="__add()" data-ng-bind="item.button_copy"></a>
+                        <a data-ng-if="item.tile_data.tile_class === 'WS' && item.tile_data.subclss === 'wings' && item.button_copy.length > 1" class="btn btn-primary ph-ellipsis" data-ng-click="__add()" data-ng-bind="item.button_copy"></a>
+                    </div>
+                    <!-- Auto Buttons -->
+                    <a data-ng-if="auto" data-ng-click="__add()" class="btn btn-primary btn-block ph-ellipsis">Add to Order</a>
+                    <div data-ng-if="isEditItem" class="productButtons">
+                        <div class="visible-xs double">
+                            <a  class="btn btn-default"   data-ng-click="__cancel()">cancel</a>
+                            <a class="btn btn-primary" data-ng-click="__edit()">save</a></div>
+                        <div class="hidden-xs" data-ng-if="(isEditItem === 'editDealItem'  || item.selects.length > 0 )">
+                            <a class="btn btn-primary" data-ng-click="__edit()">save</a></div>
+                    </div>
+                </div> <!-- End All other Buttons  -->
+                <!-- Localized Buttons -->
+                <div data-ng-if="localized === false && (item.mobile_link !== '/visacheckout' || item.link !== '/visacheckout')" class="productButtons" data-ng-controller="MenuPageCtrl">
+                    <a  class="btn btn-primary btnModal" data-ng-click="localize(page,item)">Order Now</a>
+                    <a  class="btn btn-primary btnHome" data-ng-click="localize(page, item)">Order Now</a>
+                </div> <!-- End Localized Buttons -->
+                <div data-ng-if="localized === false && (item.mobile_link === '/visacheckout' || item.link === '/visacheckout')" class="productButtons">
+                    <a  class="btn btn-primary" data-ng-click="__add()">Order Now</a>
+                </div>
+            </div> <!-- End productControllers -->
+        </div> <!-- End Product -->
+    </div> <!-- End Panel Body -->
+    </div>
+</div> <!-- End Panel -->
